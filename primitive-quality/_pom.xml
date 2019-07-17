@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>primitive</groupId>
+    <artifactId>quality</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>An Ant task and annotation required to calculate metrics descibed in 
+        https://www.codeproject.com/Articles/4051293/Unit-Test-Suite-Quality-Estimation </description>
+        
+    <licenses>
+        <license>
+            <name>BSD 3-Clause License</name>
+            <url>https://opensource.org/licenses/BSD-3-Clause</url>
+        </license>
+    </licenses>
+    
+    <developers>
+    <developer>
+      <name>Lukasz Bownik</name>
+      <email>lukasz.bownik@gmail.com</email>
+      <organization></organization>
+      <organizationUrl>https://github.com/lbownik</organizationUrl>
+    </developer>
+  </developers>
+</project>

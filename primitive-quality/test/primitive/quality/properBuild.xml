@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Quality" default="quality" basedir=".">
+    <taskdef name="acc" classname="primitive.quality.ACC"/>
+
+    <target name="quality">
+        <acc testDir="../primitive-quality.test.data.proper/build/classes"
+             outputFile="build/test/output.txt"/>
+    </target>
+</project>
