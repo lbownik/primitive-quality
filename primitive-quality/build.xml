@@ -72,6 +72,7 @@
     -->
     
     <target name="-post-jar">
-            <copy file="_pom.xml" tofile="dist/pom.xml"/>
+            <copy file="${src.dir}/_pom.xml" tofile="${dist.dir}/${application.title}.pom"/>
+            <jar basedir="${dist.dir}" destfile="${dist.dir}/primitive-quality.jar"/>
         </target>
 </project>
