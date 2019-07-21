@@ -9,6 +9,7 @@
     <name>${project.groupId}:${project.artifactId}</name>
     <description>An Ant task and annotation required to calculate metrics descibed in 
         https://www.codeproject.com/Articles/4051293/Unit-Test-Suite-Quality-Estimation </description>
+        <url>https://github.com/lbownik/primitive-quality</url>
         
     <licenses>
         <license>
@@ -16,6 +17,10 @@
             <url>https://opensource.org/licenses/BSD-3-Clause</url>
         </license>
     </licenses>
+    
+    <scm>
+       <url>https://github.com/lbownik/primitive-quality</url>
+    </scm>
     
     <developers>
     <developer>
