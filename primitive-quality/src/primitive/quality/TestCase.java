@@ -27,7 +27,6 @@
 //CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 //OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 package primitive.quality;
 
 import java.lang.reflect.Method;
@@ -44,136 +43,150 @@ import org.junit.Test;
  *@author lukasz.bownik@gmail.com
  ******************************************************************************/
 final class TestCase {
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	TestCase(final Method method) {
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   TestCase(final Method method) {
 
-		this.method = method;
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	public String getComment() {
+      this.method = method;
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   public String getComment() {
 
-		return this.method.getAnnotation(Quality.class).comment();
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	public double getVerificationRatio() {
+      return isAnnotated() ? getQuality().comment() : "";
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   public double getVerificationRatio() {
 
-		return this.method.getAnnotation(Quality.class).verificationRatio();
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	public double getUseCaseCoverage() {
+      return isAnnotated() ? getQuality().verificationRatio() : 0.0;
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   public double getUseCaseCoverage() {
 
-		return this.method.getAnnotation(Quality.class).useCaseCoverage();
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	public double getComplexityImpact() {
+      return isAnnotated() ? getQuality().useCaseCoverage() : 0.0;
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   public double getComplexityImpact() {
 
-		return this.method.getAnnotation(Quality.class).complexityImpact();
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	public double getCoveredComplexity() {
+      return isAnnotated() ? getQuality().complexityImpact() : 0.0;
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   private Quality getQuality() {
 
-		return getVerificationRatio() * getUseCaseCoverage() * getComplexityImpact();
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	public Method getMethod() {
+      return this.method.getAnnotation(Quality.class);
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   public double getCoveredComplexity() {
 
-		return this.method;
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	@Override
-	public int hashCode() {
-		
-		return this.method.hashCode();
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	@Override
-	public boolean equals(final Object obj) {
+      return getVerificationRatio() * getUseCaseCoverage() * getComplexityImpact();
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   public boolean isAnnotated() {
 
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		return this.method.equals(((TestCase) obj).method);
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	@Override
-	public String toString() {
-		
-		return "TestCase{" + "method=" + getMethod() + " verificationRatio=" +
-				  getVerificationRatio() + " useCaseCoverage=" + getUseCaseCoverage() +
-							" complexityImpact=" + getComplexityImpact() + 
-				  " comment=" + getComment() + "}";
-	}
+      return this.method.isAnnotationPresent(Quality.class);
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   public Method getMethod() {
 
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	public Class<?> getDeclaringClass() {
+      return this.method;
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   @Override
+   public int hashCode() {
 
-		return this.method.getDeclaringClass();
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	public static List<TestCase> testCasesOf(final Path path) throws Exception {
+      return this.method.hashCode();
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   @Override
+   public boolean equals(final Object obj) {
 
-		try (final URLClassLoader loader = new URLClassLoader(new URL[]{path.toUri().toURL()})) {
-			return walk(path).
-					  map(p -> path.relativize(p)).
-					  map(Path::toString).
-					  filter(s -> s.endsWith(".class")).
-					  map(s -> s.replace(".class", "")).
-					  map(s -> s.replace(path.getFileSystem().getSeparator(), ".")).
-					  map(s -> loadClass(loader, s)).
-					  flatMap(TestCase::testCasesOf).
-					  collect(toList());
-		}
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	private static Stream<TestCase> testCasesOf(final Class<?> cls) {
+      if (obj == null) {
+         return false;
+      }
+      if (getClass() != obj.getClass()) {
+         return false;
+      }
+      return this.method.equals(((TestCase) obj).method);
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   @Override
+   public String toString() {
 
-		return Stream.of(cls.getDeclaredMethods()).
-				  filter(m -> m.isAnnotationPresent(Test.class)).
-				  filter(m -> m.isAnnotationPresent(Quality.class)).
-				  map(TestCase::new);
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	private static Class<?> loadClass(final ClassLoader loader, final String name) {
+      return "TestCase{" + "method=" + getMethod() + " verificationRatio="
+            + getVerificationRatio() + " useCaseCoverage=" + getUseCaseCoverage()
+            + " complexityImpact=" + getComplexityImpact()
+            + " comment=" + getComment() + "}";
+   }
 
-		try {
-			return loader.loadClass(name);
-		} catch (final Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	private final Method method;
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   public Class<?> getDeclaringClass() {
+
+      return this.method.getDeclaringClass();
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   public static List<TestCase> testCasesOf(final Path path) throws Exception {
+
+      try (final URLClassLoader loader = new URLClassLoader(new URL[]{path.toUri().toURL()})) {
+         return walk(path).
+               map(p -> path.relativize(p)).
+               map(Path::toString).
+               filter(s -> s.endsWith(".class")).
+               map(s -> s.replace(".class", "")).
+               map(s -> s.replace(path.getFileSystem().getSeparator(), ".")).
+               map(s -> loadClass(loader, s)).
+               flatMap(TestCase::testCasesOf).
+               collect(toList());
+      }
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   private static Stream<TestCase> testCasesOf(final Class<?> cls) {
+
+      return Stream.of(cls.getDeclaredMethods()).
+            filter(m -> m.isAnnotationPresent(Test.class)).
+            filter(m -> m.isAnnotationPresent(Quality.class)).
+            map(TestCase::new);
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   private static Class<?> loadClass(final ClassLoader loader, final String name) {
+
+      try {
+         return loader.loadClass(name);
+      } catch (final Exception e) {
+         throw new RuntimeException(e);
+      }
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   private final Method method;
 }

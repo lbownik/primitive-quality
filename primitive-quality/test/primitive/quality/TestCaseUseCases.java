@@ -78,6 +78,7 @@ public class TestCaseUseCases {
 		assertEquals(0.1, tc.getComplexityImpact(), 0.001);
 		assertEquals(0.05, tc.getCoveredComplexity(), 0.001);
 		assertEquals("Comment1", tc.getComment());
+      assertTrue(tc.isAnnotated());
 		assertEquals("TestCase{method=public void primitive.quality.data.ProperTestClass1.properTest1() verificationRatio=1.0 useCaseCoverage=0.5 complexityImpact=0.1 comment=Comment1}", tc.toString());
 
 		tc = cases.stream().filter(t -> t.getMethod().toString().
@@ -87,6 +88,7 @@ public class TestCaseUseCases {
 		assertEquals(0.9, tc.getComplexityImpact(), 0.001);
 		assertEquals(0.63, tc.getCoveredComplexity(), 0.001);
 		assertEquals("Comment2", tc.getComment());
+      assertTrue(tc.isAnnotated());
 		assertEquals("TestCase{method=public void primitive.quality.data.ProperTestClass1.properTest2() verificationRatio=0.7 useCaseCoverage=1.0 complexityImpact=0.9 comment=Comment2}", tc.toString());
 
 		tc = cases.stream().filter(t -> t.getMethod().toString().
@@ -96,6 +98,7 @@ public class TestCaseUseCases {
 		assertEquals(0.1, tc.getComplexityImpact(), 0.001);
 		assertEquals(0.05, tc.getCoveredComplexity(), 0.001);
 		assertEquals("Comment3", tc.getComment());
+      assertTrue(tc.isAnnotated());
 		assertEquals("TestCase{method=public void primitive.quality.data.ProperTestClass2.properTest3() verificationRatio=1.0 useCaseCoverage=0.5 complexityImpact=0.1 comment=Comment3}", tc.toString());
 
 		tc = cases.stream().filter(t -> t.getMethod().toString().
@@ -105,6 +108,7 @@ public class TestCaseUseCases {
 		assertEquals(0.9, tc.getComplexityImpact(), 0.001);
 		assertEquals(0.63, tc.getCoveredComplexity(), 0.001);
 		assertEquals("Comment4", tc.getComment());
+      assertTrue(tc.isAnnotated());
 		assertEquals("TestCase{method=public void primitive.quality.data.ProperTestClass2.properTest4() verificationRatio=0.7 useCaseCoverage=1.0 complexityImpact=0.9 comment=Comment4}", tc.toString());
 	}
 	/****************************************************************************
