@@ -143,13 +143,6 @@ final class TestCase {
    /****************************************************************************
     *
     ***************************************************************************/
-   public Class<?> getDeclaringClass() {
-
-      return this.method.getDeclaringClass();
-   }
-   /****************************************************************************
-    *
-    ***************************************************************************/
    public static List<TestCase> testCasesOf(final Path path) throws Exception {
 
       try (final URLClassLoader loader = new URLClassLoader(new URL[]{path.toUri().toURL()})) {
@@ -171,7 +164,6 @@ final class TestCase {
 
       return Stream.of(cls.getDeclaredMethods()).
             filter(m -> m.isAnnotationPresent(Test.class)).
-            filter(m -> m.isAnnotationPresent(Quality.class)).
             map(TestCase::new);
    }
    /****************************************************************************

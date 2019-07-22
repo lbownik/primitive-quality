@@ -27,44 +27,40 @@
 //CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 //OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 package primitive.quality;
 
-import java.util.ArrayList;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import static org.junit.Assert.assertTrue;
 
 /*******************************************************************************
  *@author lukasz.bownik@gmail.com
  ******************************************************************************/
-public class ReportUseCases {
+public final class TestUtils {
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   static Path getPathToEmptySuite() throws Exception {
 
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	@Test
-	public void methods_returnProperValues_forNonEmptyTestSuite() throws Exception {
+      final Path path = Paths.get("../primitive-quality.test.data.empty/build/classes").
+            toAbsolutePath().normalize();
+      assertTrue(Files.exists(path));
 
-		final Report report = new Report(TestCase.testCasesOf(TestUtils.getPathToProperSuite()));
+      return path;
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   static Path getPathToProperSuite() throws Exception {
 
-		assertEquals((1.0+0.7+1.0+0.7)/6, report.getAverageVerificationRatio(), 0.001);
-		assertEquals((0.5+1.0+0.5+1.0)/6, report.getAverageUseCaseCoverage(), 0.001);
-		assertEquals((0.1+0.9+0.1+0.9)/6, report.getAverageComplexityImpact(), 0.001);
-		assertEquals((0.05+0.63+0.05+0.63)/6, report.getAverageCoveredComplexity(), 0.001);
-      assertEquals(4, report.getNumberOfAnnotatedCases());
-	}
-		/****************************************************************************
-	 *
-	 ***************************************************************************/
-	@Test
-	public void methods_returnZeros_forEmptyTestSuite() throws Exception {
+      final Path path = Paths.get("../primitive-quality.test.data.proper/build/classes").
+            toAbsolutePath().normalize();
+      assertTrue(Files.exists(path));
 
-		final Report report = new Report(new ArrayList<>());
-
-		assertEquals(0, report.getAverageVerificationRatio(), 0.001);
-		assertEquals(0, report.getAverageUseCaseCoverage(), 0.001);
-		assertEquals(0, report.getAverageComplexityImpact(), 0.001);
-		assertEquals(0, report.getAverageCoveredComplexity(), 0.001);
-      assertEquals(0, report.getNumberOfAnnotatedCases());
-	}
+      return path;
+   }
 }

@@ -27,7 +27,6 @@
 //CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 //OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 package primitive.quality;
 
 import java.nio.file.Files;
@@ -43,158 +42,155 @@ import org.junit.Test;
  ******************************************************************************/
 public class TestCaseUseCases {
 
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	@Test
-	public void testCasesOf_returnEmptyList_forEmptyTestSuite() throws Exception {
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   @Test
+   public void testCasesOf_returnsOnlyUnannotatedCases_forEmptyTestSuite() throws Exception {
 
-		final Path path = Paths.get("../primitive-quality.test.data.empty/build/classes").
-				  toAbsolutePath().normalize();
-		assertTrue(Files.exists(path));
+      final List<TestCase> cases = TestCase.testCasesOf(TestUtils.getPathToEmptySuite());
 
-		final List<TestCase> cases = TestCase.testCasesOf(path);
+      assertEquals(1, cases.size());
+      assertFalse(cases.get(0).isAnnotated());
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   @Test
+   public void testCasesOf_returnNonEmptyList_forNonEmptyTestSuite() throws Exception {
 
-		assertTrue(cases.isEmpty());
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	@Test
-	public void testCasesOf_returnNonEmptyList_forNonEmptyTestSuite() throws Exception {
+      final List<TestCase> cases = TestCase.testCasesOf(TestUtils.getPathToProperSuite());
 
-		final Path path = Paths.get("../primitive-quality.test.data.proper/build/classes").
-				  toAbsolutePath().normalize();
-		assertTrue(Files.exists(path));
+      assertEquals(6, cases.size());
 
-		final List<TestCase> cases = TestCase.testCasesOf(path);
-
-		assertEquals(4, cases.size());
-
-		TestCase tc = cases.stream().filter(t -> t.getMethod().toString().
-				  endsWith("ProperTestClass1.properTest1()")).findFirst().get();
-		assertEquals(1.0, tc.getVerificationRatio(), 0.001);
-		assertEquals(0.5, tc.getUseCaseCoverage(), 0.001);
-		assertEquals(0.1, tc.getComplexityImpact(), 0.001);
-		assertEquals(0.05, tc.getCoveredComplexity(), 0.001);
-		assertEquals("Comment1", tc.getComment());
+      TestCase tc = cases.stream().filter(t -> t.getMethod().toString().
+            endsWith("ProperTestClass1.properTest1()")).findFirst().get();
+      assertEquals(1.0, tc.getVerificationRatio(), 0.001);
+      assertEquals(0.5, tc.getUseCaseCoverage(), 0.001);
+      assertEquals(0.1, tc.getComplexityImpact(), 0.001);
+      assertEquals(0.05, tc.getCoveredComplexity(), 0.001);
+      assertEquals("Comment1", tc.getComment());
       assertTrue(tc.isAnnotated());
-		assertEquals("TestCase{method=public void primitive.quality.data.ProperTestClass1.properTest1() verificationRatio=1.0 useCaseCoverage=0.5 complexityImpact=0.1 comment=Comment1}", tc.toString());
+      assertEquals("TestCase{method=public void primitive.quality.data.ProperTestClass1.properTest1() verificationRatio=1.0 useCaseCoverage=0.5 complexityImpact=0.1 comment=Comment1}", tc.toString());
 
-		tc = cases.stream().filter(t -> t.getMethod().toString().
-				  endsWith("ProperTestClass1.properTest2()")).findFirst().get();
-		assertEquals(0.7, tc.getVerificationRatio(), 0.001);
-		assertEquals(1.0, tc.getUseCaseCoverage(), 0.001);
-		assertEquals(0.9, tc.getComplexityImpact(), 0.001);
-		assertEquals(0.63, tc.getCoveredComplexity(), 0.001);
-		assertEquals("Comment2", tc.getComment());
+      tc = cases.stream().filter(t -> t.getMethod().toString().
+            endsWith("ProperTestClass1.properTest2()")).findFirst().get();
+      assertEquals(0.7, tc.getVerificationRatio(), 0.001);
+      assertEquals(1.0, tc.getUseCaseCoverage(), 0.001);
+      assertEquals(0.9, tc.getComplexityImpact(), 0.001);
+      assertEquals(0.63, tc.getCoveredComplexity(), 0.001);
+      assertEquals("Comment2", tc.getComment());
       assertTrue(tc.isAnnotated());
-		assertEquals("TestCase{method=public void primitive.quality.data.ProperTestClass1.properTest2() verificationRatio=0.7 useCaseCoverage=1.0 complexityImpact=0.9 comment=Comment2}", tc.toString());
+      assertEquals("TestCase{method=public void primitive.quality.data.ProperTestClass1.properTest2() verificationRatio=0.7 useCaseCoverage=1.0 complexityImpact=0.9 comment=Comment2}", tc.toString());
 
-		tc = cases.stream().filter(t -> t.getMethod().toString().
-				  endsWith("ProperTestClass2.properTest3()")).findFirst().get();
-		assertEquals(1.0, tc.getVerificationRatio(), 0.001);
-		assertEquals(0.5, tc.getUseCaseCoverage(), 0.001);
-		assertEquals(0.1, tc.getComplexityImpact(), 0.001);
-		assertEquals(0.05, tc.getCoveredComplexity(), 0.001);
-		assertEquals("Comment3", tc.getComment());
+      tc = cases.stream().filter(t -> t.getMethod().toString().
+            endsWith("ProperTestClass1.improperTest2()")).findFirst().get();
+      assertEquals(0.0, tc.getVerificationRatio(), 0.001);
+      assertEquals(0.0, tc.getUseCaseCoverage(), 0.001);
+      assertEquals(0.0, tc.getComplexityImpact(), 0.001);
+      assertEquals(0.0, tc.getCoveredComplexity(), 0.001);
+      assertEquals("", tc.getComment());
+      assertFalse(tc.isAnnotated());
+      assertEquals("TestCase{method=public void primitive.quality.data.ProperTestClass1.improperTest2() verificationRatio=0.0 useCaseCoverage=0.0 complexityImpact=0.0 comment=}", tc.toString());
+
+      tc = cases.stream().filter(t -> t.getMethod().toString().
+            endsWith("ProperTestClass2.properTest3()")).findFirst().get();
+      assertEquals(1.0, tc.getVerificationRatio(), 0.001);
+      assertEquals(0.5, tc.getUseCaseCoverage(), 0.001);
+      assertEquals(0.1, tc.getComplexityImpact(), 0.001);
+      assertEquals(0.05, tc.getCoveredComplexity(), 0.001);
+      assertEquals("Comment3", tc.getComment());
       assertTrue(tc.isAnnotated());
-		assertEquals("TestCase{method=public void primitive.quality.data.ProperTestClass2.properTest3() verificationRatio=1.0 useCaseCoverage=0.5 complexityImpact=0.1 comment=Comment3}", tc.toString());
+      assertEquals("TestCase{method=public void primitive.quality.data.ProperTestClass2.properTest3() verificationRatio=1.0 useCaseCoverage=0.5 complexityImpact=0.1 comment=Comment3}", tc.toString());
 
-		tc = cases.stream().filter(t -> t.getMethod().toString().
-				  endsWith("ProperTestClass2.properTest4()")).findFirst().get();
-		assertEquals(0.7, tc.getVerificationRatio(), 0.001);
-		assertEquals(1.0, tc.getUseCaseCoverage(), 0.001);
-		assertEquals(0.9, tc.getComplexityImpact(), 0.001);
-		assertEquals(0.63, tc.getCoveredComplexity(), 0.001);
-		assertEquals("Comment4", tc.getComment());
+      tc = cases.stream().filter(t -> t.getMethod().toString().
+            endsWith("ProperTestClass2.properTest4()")).findFirst().get();
+      assertEquals(0.7, tc.getVerificationRatio(), 0.001);
+      assertEquals(1.0, tc.getUseCaseCoverage(), 0.001);
+      assertEquals(0.9, tc.getComplexityImpact(), 0.001);
+      assertEquals(0.63, tc.getCoveredComplexity(), 0.001);
+      assertEquals("Comment4", tc.getComment());
       assertTrue(tc.isAnnotated());
-		assertEquals("TestCase{method=public void primitive.quality.data.ProperTestClass2.properTest4() verificationRatio=0.7 useCaseCoverage=1.0 complexityImpact=0.9 comment=Comment4}", tc.toString());
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	@Test
-	public void testCasesOf_returnNonEmptyList_forNonEmptyTestSuiteInJar() throws Exception {
+      assertEquals("TestCase{method=public void primitive.quality.data.ProperTestClass2.properTest4() verificationRatio=0.7 useCaseCoverage=1.0 complexityImpact=0.9 comment=Comment4}", tc.toString());
 
-		final Path path = Paths.get("../primitive-quality.test.data.proper/build/classes").
-				  toAbsolutePath().normalize();
-		assertTrue(Files.exists(path));
+      tc = cases.stream().filter(t -> t.getMethod().toString().
+            endsWith("ProperTestClass2.improperTest4()")).findFirst().get();
+      assertEquals(0.0, tc.getVerificationRatio(), 0.001);
+      assertEquals(0.0, tc.getUseCaseCoverage(), 0.001);
+      assertEquals(0.0, tc.getComplexityImpact(), 0.001);
+      assertEquals(0.0, tc.getCoveredComplexity(), 0.001);
+      assertEquals("", tc.getComment());
+      assertFalse(tc.isAnnotated());
+      assertEquals("TestCase{method=public void primitive.quality.data.ProperTestClass2.improperTest4() verificationRatio=0.0 useCaseCoverage=0.0 complexityImpact=0.0 comment=}", tc.toString());
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   @Test
+   public void testCasesOf_returnNonEmptyList_forNonEmptyTestSuiteInJar() throws Exception {
 
-		final List<TestCase> cases = TestCase.testCasesOf(path);
+      final List<TestCase> cases = TestCase.testCasesOf(TestUtils.getPathToProperSuite());
 
-		assertEquals(4, cases.size());
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	@Test
-	public void testCasesOf_throwsNullPointer_forNullParameter() throws Exception {
+      assertEquals(6, cases.size());
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   @Test
+   public void testCasesOf_throwsNullPointer_forNullParameter() throws Exception {
 
-		try {
-			final List<TestCase> cases = TestCase.testCasesOf(null);
-			fail();
-		} catch (final NullPointerException e) {
-			assertTrue(true);
-		}
-	}
-		/****************************************************************************
-	 *
-	 ***************************************************************************/
-	@Test
-	public void testCasesOf_throwsNoSuchFileException_forInexistentPath() throws Exception {
+      try {
+         final List<TestCase> cases = TestCase.testCasesOf(null);
+         fail();
+      } catch (final NullPointerException e) {
+         assertTrue(true);
+      }
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   @Test
+   public void testCasesOf_throwsNoSuchFileException_forInexistentPath() throws Exception {
 
-		try {
-		final Path path = Paths.get("../primitive-quality.test.data.proper/build/xyz").
-				  toAbsolutePath().normalize();
-		assertFalse(Files.exists(path));
+      try {
+         final Path path = Paths.get("../primitive-quality.test.data.proper/build/xyz").
+               toAbsolutePath().normalize();
+         assertFalse(Files.exists(path));
 
-		final List<TestCase> cases = TestCase.testCasesOf(path);
-			fail();
-		} catch (final NoSuchFileException e) {
-			assertTrue(true);
-		}
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	@Test
-	public void equals_returnsFalse_forNullParameter() throws Exception {
+         final List<TestCase> cases = TestCase.testCasesOf(path);
+         fail();
+      } catch (final NoSuchFileException e) {
+         assertTrue(true);
+      }
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   @Test
+   public void equals_returnsFalse_forNullParameter() throws Exception {
 
-		final Path path = Paths.get("../primitive-quality.test.data.proper/build/classes").
-				  toAbsolutePath().normalize();
-		assertTrue(Files.exists(path));
+      final TestCase tc = TestCase.testCasesOf(TestUtils.getPathToProperSuite()).get(0);
 
-		final TestCase tc = TestCase.testCasesOf(path).get(0);
+      assertFalse(tc.equals(null));
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   @Test
+   public void equals_returnsFalse_forIncompatibleClass() throws Exception {
 
-		assertFalse(tc.equals(null));
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	@Test
-	public void equals_returnsFalse_forIncompatibleClass() throws Exception {
+      final TestCase tc = TestCase.testCasesOf(TestUtils.getPathToProperSuite()).get(0);
 
-		final Path path = Paths.get("../primitive-quality.test.data.proper/build/classes").
-				  toAbsolutePath().normalize();
-		assertTrue(Files.exists(path));
+      assertFalse(tc.equals("123"));
+   }
+   /****************************************************************************
+    *
+    ***************************************************************************/
+   @Test
+   public void equals_returnsTure_forTheSameObject() throws Exception {
 
-		final TestCase tc = TestCase.testCasesOf(path).get(0);
+      final TestCase tc = TestCase.testCasesOf(TestUtils.getPathToProperSuite()).get(0);
 
-		assertFalse(tc.equals("123"));
-	}
-	/****************************************************************************
-	 *
-	 ***************************************************************************/
-	@Test
-	public void equals_returnsTure_forTheSameObject() throws Exception {
-
-		final Path path = Paths.get("../primitive-quality.test.data.proper/build/classes").
-				  toAbsolutePath().normalize();
-		assertTrue(Files.exists(path));
-
-		final TestCase tc = TestCase.testCasesOf(path).get(0);
-
-		assertTrue(tc.equals(tc));
-	}
+      assertTrue(tc.equals(tc));
+   }
 }

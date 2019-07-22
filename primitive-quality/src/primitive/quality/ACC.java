@@ -104,9 +104,12 @@ public final class ACC extends Task {
 				  append(Double.toString(report.getAverageComplexityImpact())).
 				  append("\n");
 		writer.append("\n");
-		writer.append("Investigated cases (").
+      writer.append("Annotated cases: ").
+            append(Long.toString(report.getNumberOfAnnotatedCases())).
+            append("\n");
+		writer.append("Investigated cases: ").
 				  append(Integer.toString(report.getCases().size())).
-				  append("): \n");
+				  append("\n");
 		for (final TestCase tc : report.getCases()) {
 			writer.append(tc.toString()).append("\n");
 		}
