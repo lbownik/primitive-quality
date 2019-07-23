@@ -71,8 +71,10 @@
 
     -->
     
-    <target name="-post-jar">
+    <target name="-post-jar" depends="-javadoc-build">
             <copy file="${src.dir}/_pom.xml" tofile="${dist.dir}/${application.title}.pom"/>
-            <jar basedir="${dist.dir}" destfile="${dist.dir}/primitive-quality.jar"/>
+            <jar basedir="${dist.javadoc.dir}" destfile="${dist.dir}/${application.title}-javadoc.jar"/>
+            <jar basedir="${src.dir}" excludes="**/*pom.xml" destfile="${dist.dir}/${application.title}-sources.jar"/>
+            <jar basedir="${dist.dir}" excludes="javadoc/**" destfile="${dist.dir}/primitive-quality.jar"/>
         </target>
 </project>
