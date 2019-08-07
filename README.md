@@ -42,4 +42,6 @@ To use Ant task:
     </target>
 </project>
 ```
-Skip "outputFile" attribute to print to standard output.
+Usage: 
+*"testDir" attribute specifies path to compiles unit test classes, 
+*"outputFile" attribute specifies path to report file (skip it to print to standard output).
