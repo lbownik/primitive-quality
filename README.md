@@ -5,7 +5,7 @@ An Apache Ant task automatically calculating metrics descibed in
 [Unit Test Suite Quality Estimation](https://www.codeproject.com/Articles/4051293/Unit-Test-Suite-Quality-Estimation).
 
 Add *primitive-quality.jar* to your test path (to use @Quality anotation) and build path (to use ACC task).
-The jar available in https://oss.sonatype.org/content/groups/public/com/github/lbownik/primitive-quality .
+The jar available at https://oss.sonatype.org/content/groups/public/com/github/lbownik/primitive-quality .
 
 Report example:
 ```
