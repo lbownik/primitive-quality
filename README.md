@@ -7,7 +7,7 @@ An Apache Ant task automatically calculating metrics descibed in
 In order to use is include primitive-quality-...jar (to use @Quality anotation) into your test path and build path (to use ACC task).
 
 Report example:
-'''
+```
 //-------------------------------------
 Project: Quality
 AVERAGE COVERED COMPLEXITY: 0.22666666666666668
@@ -25,11 +25,11 @@ TestCase{method=public void primitive.quality.data.ProperTestClass2.properTest3(
 TestCase{method=public void primitive.quality.data.ProperTestClass2.properTest4() verificationRatio=0.7 useCaseCoverage=1.0 complexityImpact=0.9 comment=Comment4}
 TestCase{method=public void primitive.quality.data.ProperTestClass2.improperTest4() verificationRatio=0.0 useCaseCoverage=0.0 complexityImpact=0.0 comment=}
 //-------------------------------------
-'''
+```
 
 To use Ant task:
 
-'''xml
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="Quality" default="quality" basedir=".">
@@ -40,5 +40,5 @@ To use Ant task:
              outputFile="build/test/output.txt"/>
     </target>
 </project>
-'''
+```
 Skip "outputFile" attribute to print to standard output.
